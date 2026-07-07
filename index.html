@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PsychScope 心智探索 — 中外心理学大师知识库</title>
+  <meta name="description" content="从弗洛伊德到塞利格曼，从精神分析到积极心理学——与人类心智史上最伟大的探索者对话">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Serif:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Detail Overlay -->
+  <div class="detail-overlay" id="detail-overlay">
+    <div class="detail-panel" id="detail-panel">
+      <button class="detail-close" id="detail-close" aria-label="关闭详情">&times;</button>
+      <div class="detail-loading" id="detail-loading">加载中...</div>
+      <div class="detail-content" id="detail-content"></div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header" id="header">
+    <a href="#" class="logo">PsychScope 心智探索</a>
+    <nav class="nav-links" id="nav-links">
+      <a href="#schools" class="nav-link">学派分类</a>
+      <a href="#featured" class="nav-link">精选大师</a>
+      <a href="#timeline" class="nav-link">学说脉络</a>
+      <a href="#ai-review" class="nav-link">AI智评</a>
+      <a href="#directory" class="nav-link">名录</a>
+      <a href="#about" class="nav-link">关于</a>
+    </nav>
+    <button class="search-btn" id="search-btn" aria-label="搜索">
+      <img src="assets/svg/3_1.svg" alt="搜索" width="16" height="16">
+      <span>搜索心理学家...</span>
+    </button>
+    <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="菜单">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <!-- Search Modal -->
+  <div class="search-modal" id="search-modal">
+    <div class="search-modal-content">
+      <div class="search-modal-header">
+        <img src="assets/svg/3_13.svg" alt="搜索" width="16" height="16">
+        <input type="text" id="search-input" placeholder="搜索心理学家、学派或著作..." aria-label="搜索">
+        <button class="search-modal-close" id="search-modal-close">&times;</button>
+      </div>
+      <div class="search-results" id="search-results"></div>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <div class="hero-glow hero-glow--pink"></div>
+    <div class="hero-glow hero-glow--green"></div>
+    <div class="hero-glow hero-glow--blue"></div>
+    <div class="hero-tag">探索心灵的深度与广度</div>
+    <h1 class="hero-title">走进心理学大师的思想世界</h1>
+    <p class="hero-subtitle">从弗洛伊德到塞利格曼，从精神分析到积极心理学——与人类心智史上最伟大的探索者对话</p>
+    <div class="hero-search" id="hero-search">
+      <img src="assets/svg/3_13.svg" alt="搜索" width="16" height="16">
+      <input type="text" placeholder="搜索心理学家、学派或著作..." aria-label="搜索" id="hero-search-input">
+    </div>
+    <div class="hero-stats" id="hero-stats">
+      <div class="stat-item">
+        <div class="stat-number" id="stat-count">15</div>
+        <div class="stat-label">心理学家</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">7</div>
+        <div class="stat-label">主要学派</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">30+</div>
+        <div class="stat-label">经典著作</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Schools -->
+  <section class="section" id="schools">
+    <h2 class="section-title">学派分类</h2>
+    <p class="section-subtitle">从科学心理学到积极心理学，探索七大心理学派的核心思想与研究脉络</p>
+    <div class="schools-grid" id="schools-grid"></div>
+  </section>
+
+  <!-- Featured Psychologists -->
+  <section class="section" id="featured">
+    <h2 class="section-title">精选心理学家</h2>
+    <p class="section-subtitle">深入理解改变人类心智的心理学巨匠</p>
+    <div class="featured-grid" id="featured-grid"></div>
+  </section>
+
+  <!-- Classic Experiments -->
+  <section class="section" id="experiments">
+    <h2 class="section-title">心理学里程碑事件</h2>
+    <p class="section-subtitle">改变我们理解人类行为的里程碑实验与突破</p>
+    <div class="experiments-grid" id="experiments-grid"></div>
+  </section>
+
+  <!-- Timeline -->
+  <section class="timeline-section" id="timeline">
+    <h2 class="section-title">学说发展脉络</h2>
+    <p class="section-subtitle">从19世纪到21世纪，心理学从哲学中独立，成为一门科学</p>
+    <div class="timeline-bar"></div>
+    <div class="timeline-items" id="timeline-items"></div>
+  </section>
+
+  <!-- AI Review -->
+  <section class="section" id="ai-review">
+    <h2 class="section-title">AI 智评</h2>
+    <p class="section-subtitle">人工智能对心理学家的多维度学术评价 —— 点击切换心理学家</p>
+    <div class="ai-review-controls" id="ai-review-controls"></div>
+    <div class="ai-card" id="ai-card"></div>
+  </section>
+
+  <!-- Directory -->
+  <section class="section" id="directory">
+    <h2 class="section-title">心理学家名录</h2>
+    <p class="section-subtitle">按学派分类的中外心理学大师名录 —— 点击姓名查看详情</p>
+    <div class="dir-grid" id="dir-grid"></div>
+  </section>
+
+  <!-- Resources -->
+  <section class="section" id="resources">
+    <h2 class="section-title">相关拓展</h2>
+    <p class="section-subtitle">经典著作、视频资源、在线测试与学术社群——一站式心理学探索指南</p>
+    <div class="resources-grid" id="resources-grid"></div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer" id="about">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">PsychScope 心智探索</div>
+        <div class="footer-desc">以现代视角解读心理学大师的思想，探索人类心智的深层奥秘。</div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <div class="footer-col-title">探索</div>
+          <a href="#directory" class="footer-col-link">心理学家名录</a>
+          <a href="#schools" class="footer-col-link">学派分类</a>
+          <a href="#experiments" class="footer-col-link">里程碑事件</a>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">学习</div>
+          <a href="#ai-review" class="footer-col-link">AI智评</a>
+          <a href="#timeline" class="footer-col-link">学说脉络</a>
+          <a href="#resources" class="footer-col-link">相关拓展</a>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">关于</div>
+          <a href="#" class="footer-col-link">关于本站</a>
+          <a href="https://github.com" target="_blank" rel="noopener" class="footer-col-link">GitHub</a>
+          <a href="#" class="footer-col-link">隐私政策</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copyright">© 2026 PsychScope 心智探索. 保留所有权利。</div>
+      <a href="https://github.com" target="_blank" rel="noopener" class="footer-github">访问 GitHub 查看源码</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

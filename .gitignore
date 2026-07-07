@@ -1,0 +1,13 @@
+# Screenshots
+.screenshot-*.png
+
+# Python build script
+build_data.py
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
