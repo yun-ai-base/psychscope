@@ -459,6 +459,49 @@
     `).join('');
   }
 
+  /* ========== 孪生宇宙 ========== */
+  const TWIN_SITES = [
+    { name: 'sciomap', desc: '科学星图 — 科学大师知识图谱', icon: '🔬', cat: 'content' },
+    { name: 'philomap', desc: '哲学星球 — 人类思想星图', icon: '🧠', cat: 'content' },
+    { name: 'morris-quotes', desc: 'Morris 语录集 · 认知洞察与智慧点评', icon: '✨', cat: 'content' },
+    { name: 'research-frontiers', desc: '全球科研突破聚合与 AI 解读', icon: '📡', cat: 'ai' },
+    { name: 'cosmic-discussion', desc: '宇宙大爆炸 · AI 终端深度对话', icon: '🌌', cat: 'ai' },
+    { name: 'being-towards-death', desc: '向死而生 · AI 终端哲学对话', icon: '🕯️', cat: 'ai' },
+    { name: 'cognitive-biases-atlas', desc: '认知谬误可视化 · 21 种思维偏差', icon: '🧩', cat: 'tool' },
+    { name: 'project-atlas', desc: '项目全景图 — 知识体系总览', icon: '🗺️', cat: 'tool' },
+  ];
+  const TWIN_CATS = {
+    ai: { label: 'AI 对话', emoji: '🤖', cls: 'ai' },
+    tool: { label: '工具', emoji: '🛠️', cls: 'tool' },
+    content: { label: '内容精选', emoji: '📖', cls: 'content' },
+  };
+
+  function renderTwinUniverse() {
+    const container = document.getElementById('twin-container');
+    if (!container) return;
+    const byCat = {};
+    TWIN_SITES.forEach(s => { (byCat[s.cat] = byCat[s.cat] || []).push(s); });
+    const order = ['ai', 'tool', 'content'];
+    let html = '';
+    order.forEach(cat => {
+      const list = byCat[cat]; if (!list) return;
+      const info = TWIN_CATS[cat];
+      html += '<div class="tw-section"><div class="tw-section-title">' + info.emoji + ' ' + info.label + '</div><div class="tw-grid">';
+      list.forEach(s => {
+        html += '<a class="tw-card" href="https://yun-ai-base.github.io/' + s.name + '/" target="_blank" rel="noopener">'
+          + '<span class="tw-card-icon ' + info.cls + '">' + s.icon + '</span>'
+          + '<span class="tw-card-info">'
+          + '<span class="tw-card-name">' + s.name + '</span>'
+          + '<span class="tw-card-desc">' + s.desc + '</span>'
+          + '</span>'
+          + '<span class="tw-card-arrow">→</span>'
+          + '</a>';
+      });
+      html += '</div></div>';
+    });
+    container.innerHTML = html;
+  }
+
   /* ========== 全部初始化 ========== */
   /* ========== 书籍画廊（环形旋转） ========== */
   let galleryAngle = 0;
@@ -484,12 +527,28 @@
 
     function positionItems(angle) {
       const count = items.length;
+      const positions = [];
       items.forEach((el, i) => {
         const a = (i / count) * 2 * Math.PI + angle;
-        const x = cx + radius * Math.cos(a) - 40;
-        const y = cy + radius * Math.sin(a) - 55;
-        el.style.left = x + "px";
-        el.style.top = y + "px";
+        const x3d = radius * Math.sin(a);
+        const z3d = radius * Math.cos(a);
+
+        // Perspective projection
+        const perspective = 600;
+        const scale = perspective / (perspective + z3d);
+        const screenX = cx + x3d * scale - 40;
+        const screenY = cy - z3d * 0.08 - 55;
+
+        el.style.left = screenX + 'px';
+        el.style.top = screenY + 'px';
+        el.style.transform = 'scale(' + scale + ')';
+        el.style.opacity = Math.max(0.35, 1 - (z3d + radius) / (2 * radius) * 0.65);
+
+        positions.push({ el, z: z3d });
+      });
+      // Sort z-index: front items render on top
+      positions.sort((a, b) => b.z - a.z).forEach((p, idx) => {
+        p.el.style.zIndex = idx + 1;
       });
     }
 
@@ -522,7 +581,7 @@
 
     function animate() {
       if (galleryRunning) {
-        galleryAngle += 0.008;
+        galleryAngle += 0.002;
         positionItems(galleryAngle);
       }
       galleryRAF = requestAnimationFrame(animate);
@@ -539,6 +598,7 @@
     renderDirectory();
     renderTopResources();
     renderBookGallery();
+    renderTwinUniverse();
     observeCards();
     observeTimelineItems();
     document.getElementById('stat-count').textContent = DATA.psychologists.length;
