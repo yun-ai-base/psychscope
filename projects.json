@@ -7,5 +7,6 @@
   { "name": "research-frontiers", "desc": "全球科研突破聚合与 AI 解读", "icon": "📡", "cat": "ai" },
   { "name": "cosmic-discussion", "desc": "宇宙大爆炸 · AI 终端深度对话", "icon": "🌌", "cat": "ai" },
   { "name": "being-towards-death", "desc": "向死而生 · AI 终端哲学对话", "icon": "🕯️", "cat": "ai" },
-  { "name": "cognitive-biases-atlas", "desc": "认知谬误可视化 · 21 种思维偏差", "icon": "🧩", "cat": "tool" }
+  { "name": "cognitive-biases-atlas", "desc": "认知谬误可视化 · 21 种思维偏差", "icon": "🧩", "cat": "tool" },
+  { "name": "book-gallery", "desc": "我的书房 — 559本书籍画廊", "icon": "📖", "cat": "content" }
 ]
