@@ -459,50 +459,6 @@
     `).join('');
   }
 
-  /* ========== 孪生宇宙 ========== */
-  const TWIN_SITES = [
-    { name: 'sciomap', desc: '科学星图 — 科学大师知识图谱', icon: '🔬', cat: 'content' },
-    { name: 'philomap', desc: '哲学星球 — 人类思想星图', icon: '🧠', cat: 'content' },
-    { name: 'morris-quotes', desc: 'Morris 语录集 · 认知洞察与智慧点评', icon: '✨', cat: 'content' },
-    { name: 'research-frontiers', desc: '全球科研突破聚合与 AI 解读', icon: '📡', cat: 'ai' },
-    { name: 'cosmic-discussion', desc: '宇宙大爆炸 · AI 终端深度对话', icon: '🌌', cat: 'ai' },
-    { name: 'being-towards-death', desc: '向死而生 · AI 终端哲学对话', icon: '🕯️', cat: 'ai' },
-    { name: 'cognitive-biases-atlas', desc: '认知谬误可视化 · 21 种思维偏差', icon: '🧩', cat: 'tool' },
-    { name: 'project-atlas', desc: '项目全景图 — 知识体系总览', icon: '🗺️', cat: 'tool' },
-    { name: 'writers-gallery', desc: '百位作家画廊 — 中外作家文学宇宙', icon: '📚', cat: 'content' },
-  ];
-  const TWIN_CATS = {
-    ai: { label: 'AI 对话', emoji: '🤖', cls: 'ai' },
-    tool: { label: '工具', emoji: '🛠️', cls: 'tool' },
-    content: { label: '内容精选', emoji: '📖', cls: 'content' },
-  };
-
-  function renderTwinUniverse() {
-    const container = document.getElementById('twin-container');
-    if (!container) return;
-    const byCat = {};
-    TWIN_SITES.forEach(s => { (byCat[s.cat] = byCat[s.cat] || []).push(s); });
-    const order = ['ai', 'tool', 'content'];
-    let html = '';
-    order.forEach(cat => {
-      const list = byCat[cat]; if (!list) return;
-      const info = TWIN_CATS[cat];
-      html += '<div class="tw-section"><div class="tw-section-title">' + info.emoji + ' ' + info.label + '</div><div class="tw-grid">';
-      list.forEach(s => {
-        html += '<a class="tw-card" href="https://yun-ai-base.github.io/' + s.name + '/" target="_blank" rel="noopener">'
-          + '<span class="tw-card-icon ' + info.cls + '">' + s.icon + '</span>'
-          + '<span class="tw-card-info">'
-          + '<span class="tw-card-name">' + s.name + '</span>'
-          + '<span class="tw-card-desc">' + s.desc + '</span>'
-          + '</span>'
-          + '<span class="tw-card-arrow">→</span>'
-          + '</a>';
-      });
-      html += '</div></div>';
-    });
-    container.innerHTML = html;
-  }
-
   /* ========== 全部初始化 ========== */
   /* ========== 书籍画廊（环形旋转） ========== */
   let galleryAngle = 0;
@@ -599,7 +555,6 @@
     renderDirectory();
     renderTopResources();
     renderBookGallery();
-    renderTwinUniverse();
     observeCards();
     observeTimelineItems();
     document.getElementById('stat-count').textContent = DATA.psychologists.length;
