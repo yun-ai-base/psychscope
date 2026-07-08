@@ -469,6 +469,7 @@
     { name: 'being-towards-death', desc: '向死而生 · AI 终端哲学对话', icon: '🕯️', cat: 'ai' },
     { name: 'cognitive-biases-atlas', desc: '认知谬误可视化 · 21 种思维偏差', icon: '🧩', cat: 'tool' },
     { name: 'project-atlas', desc: '项目全景图 — 知识体系总览', icon: '🗺️', cat: 'tool' },
+    { name: 'writers-gallery', desc: '百位作家画廊 — 中外作家文学宇宙', icon: '📚', cat: 'content' },
   ];
   const TWIN_CATS = {
     ai: { label: 'AI 对话', emoji: '🤖', cls: 'ai' },
