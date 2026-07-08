@@ -38,6 +38,22 @@
     return (SCHOOL_COLORS[schoolGroup] || SCHOOL_COLORS._default).hex;
   }
 
+  /* ========== 书籍画廊数据 ========== */
+  const BOOK_GALLERY = [
+    { title: '《梦的解析》', author: '弗洛伊德', year: '1900', desc: '弗洛伊德开创性地提出了潜意识理论，开启精神分析的大门。', psychId: 'freud' },
+    { title: '《动机与人格》', author: '马斯洛', year: '1954', desc: '需求层次理论的原始著作，人本主义心理学的奠基之作。', psychId: 'maslow' },
+    { title: '《思考，快与慢》', author: '卡尼曼', year: '2011', desc: '揭示人类认知的两种系统，深刻改变了经济学、管理学和决策科学。', psychId: 'kahneman' },
+    { title: '《活出生命的意义》', author: '弗兰克尔', year: '1946', desc: '弗兰克尔以奥斯维辛幸存者身份阐述意义疗法，美国最具影响力的十本书之一。', psychId: 'frankl' },
+    { title: '《行为主义》', author: '华生', year: '1924', desc: '华生的极端环境决定论代表作，将条件反射原理全面应用于人类行为解释。', psychId: 'watson' },
+    { title: '《超越自由与尊严》', author: '斯金纳', year: '1971', desc: '论证自由意志是幻象，提出以行为技术设计更美好的社会。', psychId: 'skinner' },
+    { title: '《儿童智力的起源》', author: '皮亚杰', year: '1936', desc: '提出认知发展理论的奠基之作，揭示婴儿如何通过动作建构知识结构。', psychId: 'piaget' },
+    { title: '《自卑与超越》', author: '阿德勒', year: '1932', desc: '人类所有行为的驱动力源于克服自卑感、追求优越，社会兴趣是关键。', psychId: 'adler' },
+    { title: '《路西法效应》', author: '津巴多', year: '2007', desc: '情境将好人变为加害者——好人是如何变成恶魔的。', psychId: 'zimbardo' },
+    { title: '《对权威的服从》', author: '米尔格拉姆', year: '1974', desc: '65%的普通人愿意对他人施加致命电击——权威力量的经典实验记录。', psychId: 'milgram' },
+    { title: '《心流》', author: '契克森米哈赖', year: '1990', desc: '最优体验心理学 —— 当技能与挑战相匹配时产生的最佳体验状态。', psychId: '' },
+    { title: '《心理学与生活》', author: '津巴多', year: '1971', desc: '将科学心理学与日常生活紧密结合的经典教材，全球数百万学生的入门读物。', psychId: 'zimbardo' },
+  ];
+
   /* ========== 渲染学派分类 ========== */
   function renderSchools() {
     const grid = document.getElementById('schools-grid');
@@ -444,6 +460,76 @@
   }
 
   /* ========== 全部初始化 ========== */
+  /* ========== 书籍画廊（环形旋转） ========== */
+  let galleryAngle = 0;
+  let galleryRunning = true;
+  let galleryRAF = null;
+
+  function renderBookGallery() {
+    const ring = document.getElementById('book-ring');
+    if (!ring) return;
+
+    ring.innerHTML = BOOK_GALLERY.map((book, i) => `
+      <div class="book-item" data-index="${i}" data-psych-id="${book.psychId}">
+        <div class="book-item-title">${book.title}</div>
+        <div class="book-item-author">${book.author}</div>
+      </div>
+    `).join('');
+
+    const items = ring.querySelectorAll('.book-item');
+    const container = ring.parentElement;
+    const cx = container.offsetWidth / 2;
+    const cy = container.offsetHeight / 2;
+    const radius = Math.min(cx, cy) - 60;
+
+    function positionItems(angle) {
+      const count = items.length;
+      items.forEach((el, i) => {
+        const a = (i / count) * 2 * Math.PI + angle;
+        const x = cx + radius * Math.cos(a) - 40;
+        const y = cy + radius * Math.sin(a) - 55;
+        el.style.left = x + "px";
+        el.style.top = y + "px";
+      });
+    }
+
+    // Hover interaction
+    const centerDetail = document.getElementById('book-center-detail');
+    const centerDefault = document.querySelector('.book-center-default');
+
+    items.forEach((el, i) => {
+      el.addEventListener('mouseenter', () => {
+        galleryRunning = false;
+        const book = BOOK_GALLERY[i];
+        centerDefault.style.display = 'none';
+        centerDetail.className = 'book-center-detail active';
+        centerDetail.innerHTML = `
+          <div class="book-center-title">${book.title}</div>
+          <div class="book-center-author">${book.author} · ${book.year}</div>
+          <div class="book-center-desc">${book.desc}</div>
+        `;
+      });
+      el.addEventListener('mouseleave', () => {
+        galleryRunning = true;
+        centerDefault.style.display = '';
+        centerDetail.className = 'book-center-detail';
+        centerDetail.innerHTML = '';
+      });
+    });
+
+    // Animation loop
+    positionItems(0);
+
+    function animate() {
+      if (galleryRunning) {
+        galleryAngle += 0.008;
+        positionItems(galleryAngle);
+      }
+      galleryRAF = requestAnimationFrame(animate);
+    }
+    galleryRAF = requestAnimationFrame(animate);
+  }
+
   function initAll() {
     renderSchools();
     renderFeatured();
@@ -452,10 +538,13 @@
     renderAiReview(currentAiPsychId);
     renderDirectory();
     renderTopResources();
+    renderBookGallery();
     observeCards();
     observeTimelineItems();
     document.getElementById('stat-count').textContent = DATA.psychologists.length;
   }
+
+  /* ========== 事件委托 ========== */
 
   /* ========== 事件委托 ========== */
   function setupEvents() {
