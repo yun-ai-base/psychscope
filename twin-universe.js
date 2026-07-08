@@ -9,7 +9,7 @@
  *     <div class="twin-container" id="twin-container"></div>
  *   </section>
  *   <script src="https://yun-ai-base.github.io/psychscope/twin-universe.js"
- *           data-project="psychscope-web"></script>
+ *           data-project="psychscope"></script>
  */
 (function () {
   'use strict';
