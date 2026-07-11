@@ -64,5 +64,11 @@
     "desc": "中国诗词人荣耀世界 · 88位诗词人3D球体交互展示",
     "icon": "🏯",
     "cat": "content"
+  },
+  {
+    "name": "chinese-colors",
+    "desc": "中国传统色彩 — 古画着色与纹样鉴赏",
+    "icon": "🎨",
+    "cat": "tool"
   }
 ]
