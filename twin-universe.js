@@ -20,8 +20,9 @@
     ai:      { label: 'AI 对话',  emoji: '🤖' },
     tool:    { label: '工具',     emoji: '🛠️' },
     content: { label: '内容精选', emoji: '📖' },
+    data:    { label: '数据分析', emoji: '📊' },
   };
-  var ORDER = ['ai', 'tool', 'content'];
+  var ORDER = ['data', 'ai', 'tool', 'content'];
 
   // Get current project name from data-project attribute
   var currentProject = '';
