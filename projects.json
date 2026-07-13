@@ -76,5 +76,11 @@
     "desc": "中国传统色彩 — 古画着色与纹样鉴赏",
     "icon": "🎨",
     "cat": "tool"
+  },
+  {
+    "name": "math-giants",
+    "desc": "数学史上的二十位巨人 · 可视化传记",
+    "icon": "🔢",
+    "cat": "content"
   }
 ]
