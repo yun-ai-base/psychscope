@@ -82,5 +82,11 @@
     "desc": "数学史上的二十位巨人 · 可视化传记",
     "icon": "🔢",
     "cat": "content"
+  },
+  {
+    "name": "ai-assistant-guide",
+    "desc": "AI 助手使用指南 · 提示词与最佳实践",
+    "icon": "🤖",
+    "cat": "tool"
   }
 ]
