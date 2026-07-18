@@ -24,6 +24,11 @@
   };
   var ORDER = ['data', 'ai', 'tool', 'content'];
 
+  // 中文标题映射：英文 name 在卡片上显示中文
+  var NAME_MAP = {
+    'chinese-hall-of-fame': '太阳系中华名人堂',
+  };
+
   // Get current project name from data-project attribute
   var currentProject = '';
   var scripts = document.getElementsByTagName('script');
@@ -59,7 +64,7 @@
         html += '<a class="tw-card" href="https://yun-ai-base.github.io/' + s.name + '/" target="_blank" rel="noopener">'
           + '<span class="tw-card-icon ' + cat + '">' + s.icon + '</span>'
           + '<span class="tw-card-info">'
-          + '<span class="tw-card-name">' + s.name + '</span>'
+          + '<span class="tw-card-name">' + (NAME_MAP[s.name] || s.name) + '</span>'
           + '<span class="tw-card-desc">' + s.desc + '</span>'
           + '</span>'
           + '<span class="tw-card-arrow">→</span>'
