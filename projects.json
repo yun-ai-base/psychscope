@@ -100,5 +100,11 @@
     "desc": "微观弥散 · 稳态近似 · 权重迭代 · 最大熵统一",
     "icon": "🎲",
     "cat": "content"
+  },
+  {
+    "name": "chinese-hall-of-fame",
+    "desc": "太阳系中华名人堂 · 五千年文明 361 位杰出人物三维交互星系",
+    "icon": "🌟",
+    "cat": "content"
   }
 ]
