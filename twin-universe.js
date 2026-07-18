@@ -25,24 +25,24 @@
   var ORDER = ['data', 'ai', 'tool', 'content'];
 
   // 中文标题映射：英文 name 在卡片上显示中文
-    var NAME_MAP = {
+      var NAME_MAP = {
     'population-report': '中国人口变局',
     'psychscope': '心理学大师知识图谱',
     'sciomap': '科学星图',
     'philomap': '哲学星球',
     'writers-gallery': '百位作家画廊',
     'morris-quotes': 'Morris 语录集',
-    'research-frontiers': '全球科研突破聚合与 AI 解读',
+    'research-frontiers': '全球科研突破',
     'cosmic-discussion': '宇宙大爆炸',
     'being-towards-death': '向死而生',
-    'cognitive-biases-atlas': '认知谬误可视化',
     'book-gallery': '我的书房',
-    'poetry-glory-world': '中国诗词人荣耀世界',
+    'poetry-glory-world': '中国诗词人世界',
     'chinese-colors': '中国传统色彩',
-    'math-giants': '数学史上的二十位巨人',
+    'math-giants': '数学史上的巨人',
     'ai-assistant-guide': 'AI 助手使用指南',
     '180day-plan': '180天跃迁',
-    'existence-probability': '微观弥散',
+    'existence-probability': '存在概率论',
+    'cognitive-biases-atlas': '认知偏见图谱',
     'chinese-hall-of-fame': '太阳系中华名人堂',
   };
 
