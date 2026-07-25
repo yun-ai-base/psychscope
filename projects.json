@@ -90,27 +90,9 @@
     "cat": "tool"
   },
   {
-    "name": "180day-plan",
-    "desc": "180天跃迁 · 执行清单交互作战面板",
-    "icon": "🎯",
+    "name": "physics-panorama",
+    "desc": "物理学全景图 · 五纪元三十一节点交互可视化",
+    "icon": "📄",
     "cat": "tool"
-  },
-  {
-    "name": "existence-probability",
-    "desc": "微观弥散 · 稳态近似 · 权重迭代 · 最大熵统一",
-    "icon": "🎲",
-    "cat": "content"
-  },
-  {
-    "name": "chinese-hall-of-fame",
-    "desc": "太阳系中华名人堂 · 五千年文明 361 位杰出人物三维交互星系",
-    "icon": "🌟",
-    "cat": "content"
-  },
-  {
-    "name": "honglou-mansion",
-    "desc": "红楼梦 3D 沉浸式文学宇宙 · 120 回程高本原文阅读 · 人物关系图谱 · 气运走势",
-    "icon": "🏯",
-    "cat": "content"
   }
 ]
