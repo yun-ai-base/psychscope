@@ -94,5 +94,35 @@
     "desc": "物理学全景图 · 五纪元三十一节点交互可视化",
     "icon": "📄",
     "cat": "content"
+  },
+  {
+    "name": "honglou-mansion",
+    "desc": "红楼梦大观园 · 3D人物关系与名场面可视化",
+    "icon": "🏯",
+    "cat": "content"
+  },
+  {
+    "name": "chinese-hall-of-fame",
+    "desc": "中国历史群星 · 三维可视化名人堂",
+    "icon": "🏛️",
+    "cat": "content"
+  },
+  {
+    "name": "existence-probability",
+    "desc": "存在概率论 · 三层统一框架可视化",
+    "icon": "📊",
+    "cat": "content"
+  },
+  {
+    "name": "180day-plan",
+    "desc": "180天跃迁 · 执行清单交互作战面板",
+    "icon": "🎯",
+    "cat": "tool"
+  },
+  {
+    "name": "vpn-guide",
+    "desc": "2026 VPN 选购指南 · 旗舰/平价/机场/免费对比",
+    "icon": "🛡️",
+    "cat": "tool"
   }
 ]
