@@ -46,7 +46,7 @@
     "zh": "全球科研突破",
     "desc": "全球科研突破聚合与 AI 解读",
     "icon": "📡",
-    "cat": "ai"
+    "cat": "content"
   },
   {
     "name": "cosmic-discussion",
@@ -88,7 +88,7 @@
     "zh": "中国传统色彩",
     "desc": "中国传统色彩 — 古画着色与纹样鉴赏",
     "icon": "🎨",
-    "cat": "tool"
+    "cat": "content"
   },
   {
     "name": "math-giants",
