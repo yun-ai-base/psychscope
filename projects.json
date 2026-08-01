@@ -1,132 +1,154 @@
 [
   {
     "name": "population-report",
+    "zh": "中国人口变局",
     "desc": "中国人口变局 — 多维数据综合分析报告",
     "icon": "📊",
     "cat": "data"
   },
   {
     "name": "psychscope",
+    "zh": "心理学大师图谱",
     "desc": "心理学大师知识图谱",
     "icon": "🧠",
     "cat": "content"
   },
   {
     "name": "sciomap",
+    "zh": "科学星图",
     "desc": "科学星图 — 科学大师知识图谱",
     "icon": "🔬",
     "cat": "content"
   },
   {
     "name": "philomap",
+    "zh": "哲学星球",
     "desc": "哲学星球 — 人类思想星图",
     "icon": "🧬",
     "cat": "content"
   },
   {
     "name": "writers-gallery",
+    "zh": "百位作家画廊",
     "desc": "百位作家画廊 — 中外作家文学宇宙",
     "icon": "📚",
     "cat": "content"
   },
   {
     "name": "morris-quotes",
+    "zh": "Morris 语录集",
     "desc": "Morris 语录集 · 认知洞察与智慧点评",
     "icon": "✨",
     "cat": "content"
   },
   {
     "name": "research-frontiers",
+    "zh": "全球科研突破",
     "desc": "全球科研突破聚合与 AI 解读",
     "icon": "📡",
     "cat": "ai"
   },
   {
     "name": "cosmic-discussion",
+    "zh": "宇宙大爆炸对话",
     "desc": "宇宙大爆炸 · AI 终端深度对话",
     "icon": "🌌",
     "cat": "ai"
   },
   {
     "name": "being-towards-death",
+    "zh": "向死而生",
     "desc": "向死而生 · AI 终端哲学对话",
     "icon": "🕯️",
     "cat": "ai"
   },
   {
     "name": "cognitive-biases-atlas",
+    "zh": "认知偏见图谱",
     "desc": "认知谬误可视化 · 21 种思维偏差",
     "icon": "🧩",
     "cat": "tool"
   },
   {
     "name": "book-gallery",
+    "zh": "我的书房",
     "desc": "我的书房 — 559本书籍画廊",
     "icon": "📖",
     "cat": "content"
   },
   {
     "name": "poetry-glory-world",
+    "zh": "中国诗词人世界",
     "desc": "中国诗词人荣耀世界 · 88位诗词人3D球体交互展示",
     "icon": "🏯",
     "cat": "content"
   },
   {
     "name": "chinese-colors",
+    "zh": "中国传统色彩",
     "desc": "中国传统色彩 — 古画着色与纹样鉴赏",
     "icon": "🎨",
     "cat": "tool"
   },
   {
     "name": "math-giants",
+    "zh": "数学史上的巨人",
     "desc": "数学史上的二十位巨人 · 可视化传记",
     "icon": "🔢",
     "cat": "content"
   },
   {
     "name": "ai-assistant-guide",
+    "zh": "AI 助手使用指南",
     "desc": "AI 助手使用指南 · 提示词与最佳实践",
     "icon": "🤖",
     "cat": "tool"
   },
   {
     "name": "physics-panorama",
+    "zh": "物理学全景图",
     "desc": "物理学全景图 · 五纪元三十一节点交互可视化",
     "icon": "📄",
     "cat": "content"
   },
   {
     "name": "honglou-mansion",
+    "zh": "红楼梦大观园",
     "desc": "红楼梦大观园 · 3D人物关系与名场面可视化",
     "icon": "🏯",
     "cat": "content"
   },
   {
     "name": "chinese-hall-of-fame",
+    "zh": "中国历史群星",
     "desc": "中国历史群星 · 三维可视化名人堂",
     "icon": "🏛️",
     "cat": "content"
   },
   {
     "name": "existence-probability",
+    "zh": "存在概率论",
     "desc": "存在概率论 · 三层统一框架可视化",
     "icon": "📊",
     "cat": "content"
   },
   {
     "name": "180day-plan",
+    "zh": "180天跃迁计划",
     "desc": "180天跃迁 · 执行清单交互作战面板",
     "icon": "🎯",
     "cat": "tool"
   },
   {
     "name": "vpn-guide",
+    "zh": "VPN 选购指南",
     "desc": "2026 VPN 选购指南 · 旗舰/平价/机场/免费对比",
     "icon": "🛡️",
     "cat": "tool"
   },
   {
     "name": "naval-principles",
+    "zh": "纳瓦尔的人生建议",
     "desc": "纳瓦尔的40则人生建议 · 跨学科深度拓展",
     "icon": "📜",
     "cat": "content"
