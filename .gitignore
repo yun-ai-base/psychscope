@@ -11,3 +11,6 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
+
+# WorkBuddy local memory
+.workbuddy/

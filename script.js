@@ -1,17 +1,19 @@
 /**
  * PsychScope 心智探索 — 数据驱动交互脚本
  * 数据从 data.js 加载（兼容 file:// 协议）、详情面板、搜索、AI智评切换、卡片动画
+ * v2: 详情上下页导航 / hash 路由 / 搜索增强 / 书廊触屏 / 语录墙 / 暗色模式 / 阅读进度
  */
 (function () {
   'use strict';
 
   let DATA = window.DATA;
   let currentAiPsychId = 'freud';
+  let currentDetailIndex = -1;
 
   /* ========== 初始化（不再需要异步 fetch） ========== */
   function loadData() {
     if (!DATA) {
-      document.querySelectorAll('[id$="-grid"], #timeline-items, #dir-grid, #ai-card, #ai-review-controls').forEach(el => {
+      document.querySelectorAll('[id$="-grid"], #timeline-items, #dir-grid, #ai-card, #ai-review-controls, #quotes-viewport').forEach(el => {
         el.innerHTML = '<p style="text-align:center;color:#999;padding:40px">数据加载失败，请刷新页面重试。</p>';
       });
       return;
@@ -38,7 +40,13 @@
     return (SCHOOL_COLORS[schoolGroup] || SCHOOL_COLORS._default).hex;
   }
 
-  /* ========== 书籍画廊数据 ========== */
+  function escapeHtml(str) {
+    return String(str == null ? '' : str)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  /* ========== 书籍画廊数据（15 位大师代表作） ========== */
   const BOOK_GALLERY = [
     { title: '《梦的解析》', author: '弗洛伊德', year: '1900', desc: '弗洛伊德开创性地提出了潜意识理论，开启精神分析的大门。', psychId: 'freud' },
     { title: '《动机与人格》', author: '马斯洛', year: '1954', desc: '需求层次理论的原始著作，人本主义心理学的奠基之作。', psychId: 'maslow' },
@@ -52,6 +60,9 @@
     { title: '《对权威的服从》', author: '米尔格拉姆', year: '1974', desc: '65%的普通人愿意对他人施加致命电击——权威力量的经典实验记录。', psychId: 'milgram' },
     { title: '《心流》', author: '契克森米哈赖', year: '1990', desc: '最优体验心理学 —— 当技能与挑战相匹配时产生的最佳体验状态。', psychId: '' },
     { title: '《心理学与生活》', author: '津巴多', year: '1971', desc: '将科学心理学与日常生活紧密结合的经典教材，全球数百万学生的入门读物。', psychId: 'zimbardo' },
+    { title: '《心理类型》', author: '荣格', year: '1921', desc: '提出内倾-外倾人格类型与集体潜意识雏形，深刻影响人格心理学。', psychId: 'jung' },
+    { title: '《社会学习理论》', author: '班杜拉', year: '1977', desc: '提出观察学习与自我效能感，连接行为主义与认知心理学的桥梁。', psychId: 'bandura' },
+    { title: '《真实的幸福》', author: '塞利格曼', year: '2002', desc: '积极心理学奠基之作，将幸福解构为可测量的品格优势与积极情绪。', psychId: 'seligman' },
   ];
 
   /* ========== 渲染学派分类 ========== */
@@ -59,10 +70,11 @@
     const grid = document.getElementById('schools-grid');
     if (!DATA || !grid) return;
     grid.innerHTML = DATA.schools.map(s => `
-      <div class="school-card" data-school="${s.id}">
+      <div class="school-card" data-school="${s.id}" role="button" tabindex="0" aria-label="查看${s.name}详情">
         <div class="school-icon ${s.color === 'pink' ? 'school-icon--pink' : ''} ${s.color === 'green' ? 'school-icon--green' : ''}">${s.icon}</div>
         <div class="school-name">${s.name}</div>
         <div class="school-members">${s.desc}</div>
+        <span class="card-more-hint">查看详情 →</span>
       </div>
     `).join('');
   }
@@ -74,13 +86,15 @@
     const featured = ['freud', 'piaget', 'kahneman', 'rogers'];
     const items = featured.map(id => DATA.psychologists.find(p => p.id === id)).filter(Boolean);
     grid.innerHTML = items.map((p, i) => `
-      <div class="psych-card" data-psych-id="${p.id}">
+      <div class="psych-card" data-psych-id="${p.id}" role="button" tabindex="0" aria-label="查看${p.name}详情">
         <div class="psych-image" style="background:${getSchoolColorHex(p.schoolGroup)}">
           <span class="psych-image-text">${p.name[0]}</span>
+          <span class="psych-image-year">${p.lifespan}</span>
         </div>
         <div class="psych-tag psych-tag--${getSchoolColor(p.schoolGroup)}">${p.school}</div>
         <div class="psych-name">${p.name}</div>
         <div class="psych-quote">${p.quote}</div>
+        <span class="card-more-hint">查看详情 →</span>
       </div>
     `).join('');
   }
@@ -91,10 +105,11 @@
     if (!DATA || !grid) return;
     const colors = ['blue', 'pink', 'green', 'blue', 'pink', 'green', 'blue', 'pink', 'green'];
     grid.innerHTML = DATA.experiments.map((e, i) => `
-      <div class="exp-card" data-psych-id="${e.psychologistId || ''}">
+      <div class="exp-card" data-psych-id="${e.psychologistId || ''}" role="button" tabindex="${e.psychologistId ? '0' : '-1'}" aria-label="${e.psychologistId ? '查看相关心理学家详情' : e.title}">
         <div class="exp-year exp-year--${colors[i]}">${e.year}</div>
         <div class="exp-title">${e.title}</div>
         <div class="exp-desc">${e.desc}</div>
+        ${e.psychologistId ? '<span class="card-more-hint">查看详情 →</span>' : ''}
       </div>
     `).join('');
   }
@@ -128,7 +143,7 @@
       '学术组织': '🤝', '推荐播客': '🎙️'
     };
     grid.innerHTML = DATA.topResources.map(r => `
-      <a href="${r.url}" target="_blank" rel="noopener" class="resource-card resource-card--link">
+      <a href="${escapeHtml(r.url)}" target="_blank" rel="noopener" class="resource-card resource-card--link">
         <div class="resource-card-top">
           <span class="resource-tag resource-tag--${typeColors[r.type] || 'blue'}">${typeIcons[r.type] || '📌'} ${r.type}</span>
         </div>
@@ -163,9 +178,13 @@
     `;
     if (controls) {
       const names = DATA.psychologists.map(p => [p.id, p.name]);
-      controls.innerHTML = names.map(([id, name]) => `
-        <button class="ai-nav-btn ${id === psychId ? 'ai-nav-btn--active' : ''}" data-psych-id="${id}">${name}</button>
-      `).join('');
+      controls.innerHTML = `
+        <button class="ai-arrow-btn" id="ai-prev" aria-label="上一位">←</button>
+        <div class="ai-nav-list" id="ai-nav-list">${names.map(([id, name]) => `
+          <button class="ai-nav-btn ${id === psychId ? 'ai-nav-btn--active' : ''}" data-psych-id="${id}">${name}</button>
+        `).join('')}</div>
+        <button class="ai-arrow-btn" id="ai-next" aria-label="下一位">→</button>
+      `;
     }
     animateAiScore();
   }
@@ -207,7 +226,7 @@
         <div class="dir-column">
           <div class="dir-header dir-header--${colors[i]}" style="background:${colors[i]==='pink'?'#FFB2C1':colors[i]==='green'?'#C7E5D4':'#7AAEC0'};color:${colors[i]==='green'||colors[i]==='pink'?'#1F1F1F':'#fff'}">${g}</div>
           <div class="dir-list">
-            ${members.map(p => `<div class="dir-name" data-psych-id="${p.id}">${p.name} ${p.lifespan}</div>`).join('')}
+            ${members.map(p => `<div class="dir-name" data-psych-id="${p.id}" role="button" tabindex="0">${p.name} <span class="dir-lifespan">${p.lifespan}</span></div>`).join('')}
           </div>
         </div>
       `;
@@ -215,10 +234,12 @@
   }
 
   /* ========== 详情面板 ========== */
-  function openDetail(psychId) {
+  function openDetail(psychId, opts) {
     if (!DATA) return;
-    const p = DATA.psychologists.find(x => x.id === psychId);
+    const idx = DATA.psychologists.findIndex(x => x.id === psychId);
+    const p = DATA.psychologists[idx];
     if (!p) return;
+    currentDetailIndex = idx;
     const overlay = document.getElementById('detail-overlay');
     const content = document.getElementById('detail-content');
     const loading = document.getElementById('detail-loading');
@@ -299,7 +320,7 @@
         <h3 class="detail-section-title">相关拓展</h3>
         <div class="detail-related-grid">
           ${p.related.map(r => `
-            <a href="${r.url}" target="_blank" rel="noopener" class="detail-related-card">
+            <a href="${escapeHtml(r.url)}" target="_blank" rel="noopener" class="detail-related-card">
               <span class="detail-related-type">${r.type}</span>
               <span class="detail-related-title">${r.title}</span>
               <span class="detail-related-desc">${r.desc}</span>
@@ -311,12 +332,62 @@
 
     loading.style.display = 'none';
     overlay.scrollTop = 0;
+    updateDetailNav();
+    syncHash(psychId);
+    if (opts && opts.focusClose !== false) {
+      document.getElementById('detail-close').focus();
+    }
+  }
+
+  function updateDetailNav() {
+    const prevBtn = document.getElementById('detail-prev');
+    const nextBtn = document.getElementById('detail-next');
+    if (!prevBtn || !nextBtn) return;
+    const total = DATA ? DATA.psychologists.length : 0;
+    prevBtn.disabled = currentDetailIndex <= 0;
+    nextBtn.disabled = currentDetailIndex < 0 || currentDetailIndex >= total - 1;
+    prevBtn.setAttribute('aria-disabled', prevBtn.disabled);
+    nextBtn.setAttribute('aria-disabled', nextBtn.disabled);
+  }
+
+  function navigateDetail(dir) {
+    if (!DATA || currentDetailIndex < 0) return;
+    const next = currentDetailIndex + dir;
+    if (next < 0 || next >= DATA.psychologists.length) return;
+    openDetail(DATA.psychologists[next].id);
   }
 
   function closeDetail() {
     const overlay = document.getElementById('detail-overlay');
+    if (!overlay.classList.contains('active')) return;
     overlay.classList.remove('active');
     document.body.style.overflow = '';
+    clearHash();
+  }
+
+  /* ========== Hash 路由 ========== */
+  function syncHash(psychId) {
+    try {
+      history.replaceState(null, '', '#psych-' + psychId);
+    } catch (e) { /* file:// 下忽略 */ }
+  }
+
+  function clearHash() {
+    try {
+      if (location.hash.indexOf('#psych-') === 0) {
+        history.replaceState(null, '', location.pathname + location.search);
+      }
+    } catch (e) { /* file:// 下忽略 */ }
+  }
+
+  function restoreFromHash() {
+    if (!DATA) return;
+    const m = location.hash.match(/^#psych-(.+)$/);
+    if (!m) return;
+    const id = decodeURIComponent(m[1]);
+    if (DATA.psychologists.some(p => p.id === id)) {
+      openDetail(id, { focusClose: false });
+    }
   }
 
   /* ========== 学派详情面板 ========== */
@@ -328,10 +399,12 @@
     const content = document.getElementById('detail-content');
     const loading = document.getElementById('detail-loading');
 
+    currentDetailIndex = -1;
     overlay.classList.add('active');
     document.body.style.overflow = 'hidden';
     loading.style.display = 'block';
     content.innerHTML = '';
+    updateDetailNav();
 
     const d = school.detail;
     const members = d.members.map(id => DATA.psychologists.find(p => p.id === id)).filter(Boolean);
@@ -442,12 +515,18 @@
     }
     const q = query.toLowerCase().trim();
     const results = DATA.psychologists.filter(p => {
-      return p.name.includes(q) || p.nameEn.toLowerCase().includes(q) || p.school.includes(q) ||
-        p.schoolGroup.includes(q) || p.tags.some(t => t.includes(q)) ||
-        p.works.some(w => w.title.includes(q));
+      const haystack = [
+        p.name, p.nameEn, p.nationality, p.school, p.schoolGroup, p.bio,
+        (p.tags || []).join(' '),
+        (p.works || []).map(w => w.title + ' ' + w.core).join(' ')
+      ].join(' ').toLowerCase();
+      const expHit = DATA.experiments.some(e =>
+        e.psychologistId === p.id && (e.title + ' ' + e.year + ' ' + e.desc).toLowerCase().includes(q)
+      );
+      return haystack.includes(q) || expHit;
     });
     if (results.length === 0) {
-      container.innerHTML = '<p class="search-empty">未找到匹配的心理学家，请尝试其他关键词。</p>';
+      container.innerHTML = '<p class="search-empty">未找到匹配内容，请尝试其他关键词（支持著作、实验、学派）。</p>';
       return;
     }
     container.innerHTML = results.map(p => `
@@ -459,11 +538,60 @@
     `).join('');
   }
 
-  /* ========== 全部初始化 ========== */
-  /* ========== 书籍画廊（环形旋转） ========== */
+  /* ========== 书籍画廊（环形旋转 + 触屏支持） ========== */
   let galleryAngle = 0;
   let galleryRunning = true;
   let galleryRAF = null;
+  let galleryTouched = false;
+
+  function isMobileLayout() {
+    return window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
+  }
+
+  function showBookDetail(book) {
+    const centerDetail = document.getElementById('book-center-detail');
+    const centerDefault = document.querySelector('.book-center-default');
+    if (!centerDetail || !centerDefault) return;
+    centerDefault.style.display = 'none';
+    centerDetail.className = 'book-center-detail active';
+    centerDetail.innerHTML = `
+      <div class="book-center-title">${book.title}</div>
+      <div class="book-center-author">${book.author} · ${book.year}</div>
+      <div class="book-center-desc">${book.desc}</div>
+    `;
+  }
+
+  function hideBookDetail() {
+    const centerDetail = document.getElementById('book-center-detail');
+    const centerDefault = document.querySelector('.book-center-default');
+    if (!centerDetail || !centerDefault) return;
+    galleryRunning = true;
+    centerDefault.style.display = '';
+    centerDetail.className = 'book-center-detail';
+    centerDetail.innerHTML = '';
+    startGalleryAnim();
+  }
+
+  function startGalleryAnim() {
+    if (galleryRAF || !galleryRunning) return;
+    galleryRAF = requestAnimationFrame(animateGallery);
+  }
+
+  function stopGalleryAnim() {
+    if (galleryRAF) {
+      cancelAnimationFrame(galleryRAF);
+      galleryRAF = null;
+    }
+  }
+
+  function animateGallery() {
+    galleryRAF = null;
+    if (galleryRunning) {
+      galleryAngle += 0.002;
+      positionGalleryItems(galleryAngle);
+      startGalleryAnim();
+    }
+  }
 
   function renderBookGallery() {
     const ring = document.getElementById('book-ring');
@@ -509,43 +637,145 @@
       });
     }
 
-    // Hover interaction
-    const centerDetail = document.getElementById('book-center-detail');
-    const centerDefault = document.querySelector('.book-center-default');
-
+    // Hover interaction (desktop)
     items.forEach((el, i) => {
       el.addEventListener('mouseenter', () => {
         galleryRunning = false;
-        const book = BOOK_GALLERY[i];
-        centerDefault.style.display = 'none';
-        centerDetail.className = 'book-center-detail active';
-        centerDetail.innerHTML = `
-          <div class="book-center-title">${book.title}</div>
-          <div class="book-center-author">${book.author} · ${book.year}</div>
-          <div class="book-center-desc">${book.desc}</div>
-        `;
+        stopGalleryAnim();
+        showBookDetail(BOOK_GALLERY[i]);
       });
       el.addEventListener('mouseleave', () => {
-        galleryRunning = true;
-        centerDefault.style.display = '';
-        centerDetail.className = 'book-center-detail';
-        centerDetail.innerHTML = '';
+        hideBookDetail();
+      });
+      // Touch: desktop tap shows detail; mobile handled by delegation -> open psych detail
+      el.addEventListener('click', (e) => {
+        if (isMobileLayout()) return;
+        e.stopPropagation();
+        if (!galleryTouched) {
+          showBookDetail(BOOK_GALLERY[i]);
+          galleryTouched = true;
+        } else if (e.target === el) {
+          hideBookDetail();
+          galleryTouched = false;
+        }
       });
     });
 
-    // Animation loop
-    positionItems(0);
-
-    function animate() {
-      if (galleryRunning) {
-        galleryAngle += 0.002;
-        positionItems(galleryAngle);
+    ring.addEventListener('click', (e) => {
+      if (e.target === ring || e.target.classList.contains('book-ring')) {
+        hideBookDetail();
+        galleryTouched = false;
       }
-      galleryRAF = requestAnimationFrame(animate);
-    }
-    galleryRAF = requestAnimationFrame(animate);
+    });
+
+    // Initial position
+    positionItems(0);
+    startGalleryAnim();
   }
 
+  /* ========== 思想语录墙 ========== */
+  let quotesTimer = null;
+  let quotesIndex = 0;
+  let quotesHovered = false;
+
+  function renderQuotes() {
+    const viewport = document.getElementById('quotes-viewport');
+    const dots = document.getElementById('quotes-dots');
+    if (!DATA || !viewport) return;
+    const quotes = DATA.psychologists.map(p => ({ text: p.quote, name: p.name, school: p.school }));
+    viewport.innerHTML = quotes.map((q, i) => `
+      <div class="quote-slide ${i === 0 ? 'active' : ''}" data-index="${i}" role="tabpanel" aria-label="第${i + 1}条语录">
+        <div class="quote-mark">“</div>
+        <p class="quote-text">${q.text}</p>
+        <div class="quote-author">— ${q.name} <span class="quote-school">${q.school}</span></div>
+      </div>
+    `).join('');
+    dots.innerHTML = quotes.map((q, i) => `
+      <button class="quote-dot ${i === 0 ? 'active' : ''}" data-index="${i}" aria-label="语录${i + 1}"></button>
+    `).join('');
+    startQuotesAuto();
+  }
+
+  function goQuote(index) {
+    const slides = document.querySelectorAll('.quote-slide');
+    const dots = document.querySelectorAll('.quote-dot');
+    if (!slides.length) return;
+    const total = slides.length;
+    quotesIndex = ((index % total) + total) % total;
+    slides.forEach((s, i) => s.classList.toggle('active', i === quotesIndex));
+    dots.forEach((d, i) => d.classList.toggle('active', i === quotesIndex));
+  }
+
+  function nextQuote() { goQuote(quotesIndex + 1); }
+  function prevQuote() { goQuote(quotesIndex - 1); }
+
+  function startQuotesAuto() {
+    stopQuotesAuto();
+    quotesTimer = setInterval(() => {
+      if (!quotesHovered) nextQuote();
+    }, 4500);
+  }
+
+  function stopQuotesAuto() {
+    if (quotesTimer) { clearInterval(quotesTimer); quotesTimer = null; }
+  }
+
+  function setupQuotes() {
+    const carousel = document.getElementById('quotes-carousel');
+    const prev = document.getElementById('quotes-prev');
+    const next = document.getElementById('quotes-next');
+    const dots = document.getElementById('quotes-dots');
+    if (!carousel) return;
+    carousel.addEventListener('mouseenter', () => { quotesHovered = true; });
+    carousel.addEventListener('mouseleave', () => { quotesHovered = false; });
+    prev.addEventListener('click', () => { nextQuote(); startQuotesAuto(); });
+    next.addEventListener('click', () => { prevQuote(); startQuotesAuto(); });
+    dots.addEventListener('click', (e) => {
+      const dot = e.target.closest('.quote-dot');
+      if (dot) { goQuote(parseInt(dot.dataset.index, 10)); startQuotesAuto(); }
+    });
+  }
+
+  /* ========== 暗色模式 ========== */
+  function setupThemeToggle() {
+    const btn = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    const saved = (function () {
+      try { return localStorage.getItem('psych-theme'); } catch (e) { return null; }
+    })();
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (saved === 'dark' || (!saved && prefersDark)) {
+      html.setAttribute('data-theme', 'dark');
+    }
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        try { localStorage.setItem('psych-theme', 'light'); } catch (e) { /* ignore */ }
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        try { localStorage.setItem('psych-theme', 'dark'); } catch (e) { /* ignore */ }
+      }
+    });
+  }
+
+  /* ========== 阅读进度条 ========== */
+  function setupProgressBar() {
+    const bar = document.getElementById('progress-bar');
+    if (!bar) return;
+    const update = () => {
+      const h = document.documentElement;
+      const total = h.scrollHeight - h.clientHeight;
+      const ratio = total > 0 ? h.scrollTop / total : 0;
+      bar.style.width = (ratio * 100).toFixed(1) + '%';
+    };
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update, { passive: true });
+    update();
+  }
+
+  /* ========== 全部初始化 ========== */
   function initAll() {
     renderSchools();
     renderFeatured();
@@ -555,21 +785,51 @@
     renderDirectory();
     renderTopResources();
     renderBookGallery();
+    renderQuotes();
     observeCards();
     observeTimelineItems();
-    document.getElementById('stat-count').textContent = DATA.psychologists.length;
+    setupQuotes();
+    updateStats();
   }
 
-  /* ========== 事件委托 ========== */
+  /* ========== 动态统计 ========== */
+  function updateStats() {
+    if (!DATA) return;
+    const countEl = document.getElementById('stat-count');
+    const schoolsEl = document.getElementById('stat-schools');
+    const worksEl = document.getElementById('stat-works');
+    const expEl = document.getElementById('stat-exp');
+    if (countEl) countEl.textContent = DATA.psychologists.length;
+    if (schoolsEl) schoolsEl.textContent = DATA.schools.length;
+    if (worksEl) {
+      const total = DATA.psychologists.reduce((acc, p) => acc + (p.works ? p.works.length : 0), 0);
+      worksEl.textContent = total + '+';
+    }
+    if (expEl) expEl.textContent = DATA.experiments.length;
+  }
 
   /* ========== 事件委托 ========== */
   function setupEvents() {
     // Open detail on card click
     document.addEventListener('click', (e) => {
+      // Book gallery center card clicks should not trigger psych detail;
+      // on mobile, tapping a book opens its author's detail (handled below).
+      const inBook = e.target.closest('.book-item');
+      const inCenterCard = e.target.closest('#book-center-card');
+      if (inCenterCard) return;
+
       const psychEl = e.target.closest('[data-psych-id]');
       if (psychEl) {
         const id = psychEl.dataset.psychId;
         if (!id) return;
+
+        // Book item on mobile layout -> open author detail (desktop click handled by gallery itself)
+        if (inBook) {
+          if (isMobileLayout()) {
+            openDetail(id);
+          }
+          return;
+        }
 
         // If clicked in AI review controls
         if (psychEl.closest('#ai-review-controls')) {
@@ -590,11 +850,35 @@
       }
     });
 
+    // Keyboard activation for role=button cards
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      const t = e.target;
+      if (!t || t.getAttribute('role') !== 'button') return;
+      const psychEl = t.closest('[data-psych-id]');
+      if (psychEl) {
+        e.preventDefault();
+        const id = psychEl.dataset.psychId;
+        if (id && !psychEl.closest('#ai-review-controls')) {
+          openDetail(id);
+        }
+      }
+      const schoolCard = t.closest('.school-card');
+      if (schoolCard && schoolCard.dataset.school) {
+        e.preventDefault();
+        openSchoolDetail(schoolCard.dataset.school);
+      }
+    });
+
     // Close detail
     document.getElementById('detail-close').addEventListener('click', closeDetail);
     document.getElementById('detail-overlay').addEventListener('click', (e) => {
       if (e.target === document.getElementById('detail-overlay')) closeDetail();
     });
+
+    // Detail prev/next
+    document.getElementById('detail-prev').addEventListener('click', () => navigateDetail(-1));
+    document.getElementById('detail-next').addEventListener('click', () => navigateDetail(1));
 
     // Search
     document.getElementById('search-btn').addEventListener('click', openSearch);
@@ -644,13 +928,38 @@
       }
     });
 
-    // Keyboard
+    // Global keyboard: Esc close, ←/→ navigate detail
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         if (document.getElementById('detail-overlay').classList.contains('active')) closeDetail();
         if (document.getElementById('search-modal').classList.contains('active')) closeSearch();
       }
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        const overlay = document.getElementById('detail-overlay');
+        if (!overlay.classList.contains('active')) return;
+        const inInput = e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA');
+        if (inInput) return;
+        e.preventDefault();
+        navigateDetail(e.key === 'ArrowLeft' ? -1 : 1);
+      }
     });
+
+    // AI review prev/next arrows
+    document.addEventListener('click', (e) => {
+      const aiPrev = e.target.closest('#ai-prev');
+      const aiNext = e.target.closest('#ai-next');
+      if (!aiPrev && !aiNext) return;
+      const total = DATA ? DATA.psychologists.length : 0;
+      const cur = DATA.psychologists.findIndex(p => p.id === currentAiPsychId);
+      let next = cur;
+      if (aiPrev) next = cur <= 0 ? total - 1 : cur - 1;
+      if (aiNext) next = cur >= total - 1 ? 0 : cur + 1;
+      currentAiPsychId = DATA.psychologists[next].id;
+      renderAiReview(currentAiPsychId);
+    });
+
+    // hashchange
+    window.addEventListener('hashchange', restoreFromHash);
   }
 
   /* ========== 卡片入场动画 ========== */
@@ -730,13 +1039,11 @@
     const header = document.getElementById('header');
     window.addEventListener('scroll', () => {
       if (window.scrollY > 20) {
-        header.style.boxShadow = '0 2px 12px rgba(0,0,0,0.06)';
-        header.style.background = 'rgba(232, 245, 249, 0.95)';
+        header.classList.add('scrolled');
       } else {
-        header.style.boxShadow = '';
-        header.style.background = '';
+        header.classList.remove('scrolled');
       }
-    });
+    }, { passive: true });
   }
 
   /* ========== 回到顶部按钮 ========== */
@@ -757,7 +1064,7 @@
       } else {
         btn.classList.remove('visible');
       }
-    });
+    }, { passive: true });
   }
 
   /* ========== 启动 ========== */
@@ -766,6 +1073,9 @@
     setupMobileMenu();
     setupHeaderScroll();
     setupBackToTop();
+    setupThemeToggle();
+    setupProgressBar();
     loadData();
+    restoreFromHash();
   });
 })();

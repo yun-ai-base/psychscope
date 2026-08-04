@@ -8,15 +8,22 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Serif:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=2">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="twin-universe.css">
 </head>
 <body>
+  <!-- Reading Progress Bar -->
+  <div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
   <!-- Detail Overlay -->
   <div class="detail-overlay" id="detail-overlay">
     <div class="detail-panel" id="detail-panel">
       <button class="detail-close" id="detail-close" aria-label="关闭详情">&times;</button>
+      <div class="detail-nav-btns">
+        <button class="detail-nav-btn" id="detail-prev" aria-label="上一位心理学家">← 上一位</button>
+        <button class="detail-nav-btn" id="detail-next" aria-label="下一位心理学家">下一位 →</button>
+      </div>
       <div class="detail-loading" id="detail-loading">加载中...</div>
       <div class="detail-content" id="detail-content"></div>
     </div>
@@ -36,6 +43,10 @@
     <button class="search-btn" id="search-btn" aria-label="搜索">
       <img src="assets/svg/3_1.svg" alt="搜索" width="16" height="16">
       <span>搜索心理学家...</span>
+    </button>
+    <button class="theme-toggle" id="theme-toggle" aria-label="切换深浅色主题">
+      <span class="theme-toggle-icon theme-toggle-icon--sun">☀</span>
+      <span class="theme-toggle-icon theme-toggle-icon--moon">☾</span>
     </button>
     <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="菜单">
       <span></span><span></span><span></span>
@@ -72,12 +83,16 @@
         <div class="stat-label">心理学家</div>
       </div>
       <div class="stat-item">
-        <div class="stat-number">7</div>
+        <div class="stat-number" id="stat-schools">7</div>
         <div class="stat-label">主要学派</div>
       </div>
       <div class="stat-item">
-        <div class="stat-number">30+</div>
+        <div class="stat-number" id="stat-works">30+</div>
         <div class="stat-label">经典著作</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" id="stat-exp">9</div>
+        <div class="stat-label">里程碑事件</div>
       </div>
     </div>
   </section>
@@ -117,6 +132,18 @@
     <p class="section-subtitle">人工智能对心理学家的多维度学术评价 —— 点击切换心理学家</p>
     <div class="ai-review-controls" id="ai-review-controls"></div>
     <div class="ai-card" id="ai-card"></div>
+  </section>
+
+  <!-- Quote Wall -->
+  <section class="section quotes-section" id="quotes">
+    <h2 class="section-title">思想语录墙</h2>
+    <p class="section-subtitle">跨越一个半世纪的大师箴言 —— 悬停暂停，左右切换</p>
+    <div class="quotes-carousel" id="quotes-carousel">
+      <div class="quotes-viewport" id="quotes-viewport"></div>
+      <button class="quotes-arrow quotes-arrow--prev" id="quotes-prev" aria-label="上一条语录">←</button>
+      <button class="quotes-arrow quotes-arrow--next" id="quotes-next" aria-label="下一条语录">→</button>
+      <div class="quotes-dots" id="quotes-dots"></div>
+    </div>
   </section>
 
   <!-- Directory -->
@@ -188,7 +215,7 @@
   </footer>
 
   <script src="data.js"></script>
-  <script src="script.js"></script>
+  <script src="script.js?v=2"></script>
   <script src="twin-universe.js?v=2" data-project="psychscope"></script>
 <script>fetch('https://api.countapi.xyz/hit/yun-ai-base/psychscope').catch(()=>{});</script>
 </body>
