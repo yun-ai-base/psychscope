@@ -155,135 +155,16 @@
   },
   {
     "name": "economics-map",
-    "zh": "经济经纬",
-    "desc": "经济经纬 · 思想交易所 — 32 位经济学大师的思想光谱与生活兑换",
+    "zh": "经济学大师图谱",
+    "desc": "经济学大师图谱 · 40位经济学大师思想光谱与生活兑换",
     "icon": "💰",
     "cat": "content"
-  },
-  {
-    "name": "ai-chat-room",
-    "zh": "AI 聊天室",
-    "desc": "AI 聊天室 · 多模型对话界面",
-    "icon": "💬",
-    "cat": "ai"
-  },
-  {
-    "name": "bookmarks",
-    "zh": "项目导航",
-    "desc": "个人书签导航页 · 所有 GitHub Pages 项目统一入口",
-    "icon": "🔖",
-    "cat": "tool"
-  },
-  {
-    "name": "claude-code-features",
-    "zh": "Claude Code 功能手册",
-    "desc": "Claude Code 功能可视化手册 · 命令分类与场景速查",
-    "icon": "📘",
-    "cat": "tool"
-  },
-  {
-    "name": "collection",
-    "zh": "收藏管理系统",
-    "desc": "个人内容收藏库 · AI 驱动的知识管理与检索",
-    "icon": "📚",
-    "cat": "content"
-  },
-  {
-    "name": "diary",
-    "zh": "剪影 · 灵感收藏站",
-    "desc": "私人灵感收藏站 · 名句/奇思/杂思/美图随手记",
-    "icon": "✨",
-    "cat": "content"
-  },
-  {
-    "name": "hot-trending",
-    "zh": "热门趋势",
-    "desc": "热门趋势聚合 · 多平台热点追踪",
-    "icon": "🔥",
-    "cat": "tool"
-  },
-  {
-    "name": "ocean-studio",
-    "zh": "海洋工作室",
-    "desc": "海洋工作室 · 创意交互实验空间",
-    "icon": "🌊",
-    "cat": "ai"
-  },
-  {
-    "name": "philosophy-atlas",
-    "zh": "哲学思想图谱",
-    "desc": "脉络 · 思想之河 — 人类哲学知识图谱：39学派/三视角/概念暗流",
-    "icon": "🧭",
-    "cat": "content"
-  },
-  {
-    "name": "project-atlas",
-    "zh": "项目总览",
-    "desc": "项目总览 · 所有项目统一入口",
-    "icon": "🗺️",
-    "cat": "tool"
-  },
-  {
-    "name": "rss-reader",
-    "zh": "RSS 阅读器",
-    "desc": "RSS 阅读器 · 静态页面版",
-    "icon": "📡",
-    "cat": "tool"
   },
   {
     "name": "star-gazer",
     "zh": "StarGazer 深空影像",
     "desc": "StarGazer · 深空影像探索 — 304 张 NASA 真实影像画廊",
     "icon": "🌌",
-    "cat": "content"
-  },
-  {
-    "name": "teacher-trend",
-    "zh": "教师招聘数据",
-    "desc": "江苏省教师招聘数据可视化分析",
-    "icon": "📊",
-    "cat": "data"
-  },
-  {
-    "name": "telegram-nav",
-    "zh": "Telegram 导航",
-    "desc": "Telegram 群组/频道/机器人 可视化导航 — 10000+ 精选资源",
-    "icon": "📡",
-    "cat": "tool"
-  },
-  {
-    "name": "tool-collection",
-    "zh": "实用工具集",
-    "desc": "实用工具集 · 在线工具聚合导航",
-    "icon": "🧰",
-    "cat": "tool"
-  },
-  {
-    "name": "twinverse",
-    "zh": "孪生宇宙",
-    "desc": "孪生宇宙 · 项目聚合门户，自动同步所有项目",
-    "icon": "🧬",
-    "cat": "tool"
-  },
-  {
-    "name": "x-follow-nav",
-    "zh": "X 关注导航",
-    "desc": "X 关注分类导航 · 103个关注按主题分类",
-    "icon": "🐦",
-    "cat": "content"
-  },
-  {
-    "name": "zhihu-curated",
-    "zh": "知乎精选：改变自己",
-    "desc": "知乎回答精选 · 用什么方法能尽快改变自己？",
-    "icon": "📖",
-    "cat": "content"
-  },
-  {
-    "name": "zhihu-wudao",
-    "zh": "知乎精选：悟通道理",
-    "desc": "知乎回答精选 · 最近你悟通了什么道理/现象？",
-    "icon": "💡",
     "cat": "content"
   }
 ]
