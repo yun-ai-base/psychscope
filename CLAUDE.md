@@ -9,11 +9,11 @@
 ## 关键文件
 | 文件 | 说明 |
 |---|---|
-| `index.html` | 主页面（9KB） |
-| `data.js` | 内嵌心理学数据集（106KB） |
-| `data/psychologists.json` | 心理学家详细数据（92KB） |
-| `script.js` | 交互逻辑（31KB） |
-| `style.css` | 样式（38KB） |
+| `index.html` | 主页面 |
+| `data.js` | **唯一数据源**（内嵌）：心理学家+学派+实验+拓展+年表 timeline |
+| `script.js` | 交互逻辑 |
+| `style.css` | 样式 |
+| `assets/portraits/` | 15 位大师公有领域肖像（本地，加载失败回退色块） |
 | `projects.json` | **项目导航配置（公共数据源，手工维护）** |
 | `twin-universe.js` | 孪生宇宙导航脚本（独立，可复制给其他项目） |
 | `twin-universe.css` | 孪生宇宙样式 |

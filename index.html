@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Serif:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=2">
+  <link rel="stylesheet" href="style.css?v=4">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="twin-universe.css">
 </head>
@@ -126,6 +126,13 @@
     <div class="timeline-items" id="timeline-items"></div>
   </section>
 
+  <!-- Relations -->
+  <section class="section" id="relations">
+    <h2 class="section-title">思想传承图谱</h2>
+    <p class="section-subtitle">十五位大师之间的师承、影响与对话 —— 点击节点查看详情</p>
+    <div class="relations-wrap" id="relations-wrap"></div>
+  </section>
+
   <!-- AI Review -->
   <section class="section" id="ai-review">
     <h2 class="section-title">AI 智评</h2>
@@ -163,12 +170,20 @@
   <!-- Book Gallery -->
   <section class="section" id="book-gallery">
     <h2 class="section-title">经典心理学著作</h2>
-    <p class="section-subtitle">跨越百年的思想精华 —— 悬停查看书籍详情</p>
-    <div class="book-gallery" id="book-gallery-container">
-      <div class="book-ring" id="book-ring"></div>
-      <div class="book-center-card" id="book-center-card">
-        <div class="book-center-default">悬停上方书籍<br>查看详情</div>
-        <div class="book-center-detail" id="book-center-detail"></div>
+    <p class="section-subtitle">跨越百年的思想精华 —— 环形书架 · 悬停预览，点击锁定</p>
+    <div class="book-orbit" id="book-orbit" role="listbox" aria-label="经典著作环形书架"></div>
+    <div class="book-detail-card" id="book-detail-card" hidden>
+      <span class="book-detail-ribbon" id="book-detail-ribbon"></span>
+      <div class="book-detail-info">
+        <div class="book-detail-title" id="book-detail-title"></div>
+        <div class="book-detail-meta" id="book-detail-meta"></div>
+        <p class="book-detail-desc" id="book-detail-desc"></p>
+        <div class="book-detail-core" id="book-detail-core">
+          <div class="book-detail-core-title">核心学术思想</div>
+          <p class="book-detail-core-text" id="book-detail-core-text"></p>
+          <button class="book-detail-toggle" id="book-detail-toggle" type="button">展开全文 ↓</button>
+        </div>
+        <button class="book-detail-author" id="book-detail-author" hidden>查看作者详情 →</button>
       </div>
     </div>
   </section>
@@ -214,8 +229,8 @@
     </div>
   </footer>
 
-  <script src="data.js"></script>
-  <script src="script.js?v=2"></script>
+  <script src="data.js?v=2"></script>
+  <script src="script.js?v=11"></script>
   <script src="twin-universe.js?v=2" data-project="psychscope"></script>
 <script>fetch('https://api.countapi.xyz/hit/yun-ai-base/psychscope').catch(()=>{});</script>
 </body>
