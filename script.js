@@ -430,6 +430,72 @@
     }).join('') + '</div>';
   }
 
+  /* ========== 渲染核心概念 ========== */
+  function renderConcepts() {
+    const grid = document.getElementById('concepts-grid');
+    if (!DATA || !grid || !DATA.concepts) return;
+    const categories = ['认知与学习', '情绪与动机', '人格与自我', '社会与群体', '发展心理', '临床与应用'];
+    const byName = {};
+    DATA.psychologists.forEach(function (p) { byName[p.id] = p; });
+    grid.innerHTML = categories.map(function (cat) {
+      const items = DATA.concepts.filter(function (c) { return c.category === cat; });
+      if (!items.length) return '';
+      return '<div class="concept-group">'
+        + '<div class="concept-group-title">' + cat + '</div>'
+        + '<div class="concept-cards">'
+        + items.map(function (c) {
+          const rel = (c.psychologistIds || []).map(function (id) { const p = byName[id]; return p ? shortName(p.name) : id; }).join(' · ');
+          return '<div class="concept-card" data-concept-id="' + c.id + '" role="button" tabindex="0">'
+            + '<div class="concept-name">' + c.name + ' <span class="concept-en">' + c.nameEn + '</span></div>'
+            + '<div class="concept-def">' + c.definition + '</div>'
+            + '<div class="concept-related">' + rel + '</div>'
+            + '</div>';
+        }).join('')
+        + '</div></div>';
+    }).join('');
+  }
+
+  function openConceptDetail(conceptId) {
+    if (!DATA || !DATA.concepts) return;
+    const c = DATA.concepts.find(function (x) { return x.id === conceptId; });
+    if (!c) return;
+    const overlay = document.getElementById('detail-overlay');
+    const content = document.getElementById('detail-content');
+    const loading = document.getElementById('detail-loading');
+    currentDetailIndex = -1;
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    loading.style.display = 'block';
+    content.innerHTML = '';
+    updateDetailNav();
+    const byName = {};
+    DATA.psychologists.forEach(function (p) { byName[p.id] = p; });
+    const related = (c.psychologistIds || []).map(function (id) { return byName[id]; }).filter(Boolean);
+    content.innerHTML = '<div class="detail-header">'
+      + '<div class="detail-meta"><span class="detail-school-tag detail-school-tag--blue">' + c.category + '</span></div>'
+      + '<h1 class="detail-name">' + c.name + '</h1>'
+      + '<p class="detail-name-en">' + c.nameEn + '</p>'
+      + '</div>'
+      + '<div class="detail-section"><h3 class="detail-section-title">概念释义</h3><p class="detail-text">' + c.definition + '</p></div>'
+      + '<div class="detail-section"><h3 class="detail-section-title">相关心理学家</h3>'
+      + '<div class="school-member-list">'
+      + related.map(function (p) {
+        return '<div class="school-member-card" data-psych-id="' + p.id + '">'
+          + '<div class="school-member-avatar" style="background:' + getSchoolColorHex(p.schoolGroup) + '">'
+          + (p.image ? '<img class="portrait" src="' + escapeHtml(p.image) + '" alt="' + escapeHtml(p.name) + '" loading="lazy" decoding="async" onerror="this.remove()">' : '')
+          + '<span class="school-member-letter">' + p.name[0] + '</span>'
+          + '</div>'
+          + '<div class="school-member-info">'
+          + '<div class="school-member-name">' + p.name + '</div>'
+          + '<div class="school-member-en">' + p.nameEn + '</div>'
+          + '<div class="school-member-tag">' + p.school + '</div>'
+          + '</div></div>';
+      }).join('')
+      + '</div></div>';
+    loading.style.display = 'none';
+    overlay.scrollTop = 0;
+  }
+
   /* ========== 详情面板 ========== */
   function openDetail(psychId, opts) {
     if (!DATA) return;
@@ -1154,6 +1220,7 @@
     renderTimeline();
     renderAiReview(currentAiPsychId);
     renderDirectory();
+    renderConcepts();
     renderRelations();
     renderTopResources();
     renderBookOrbit();
@@ -1182,6 +1249,14 @@
 
   /* ========== 事件委托 ========== */
   function setupEvents() {
+    // Open concept detail on card click
+    document.addEventListener('click', (e) => {
+      const conceptEl = e.target.closest('[data-concept-id]');
+      if (conceptEl && conceptEl.dataset.conceptId) {
+        openConceptDetail(conceptEl.dataset.conceptId);
+      }
+    });
+
     // Open detail on card click
     document.addEventListener('click', (e) => {
       // 环形书架/书籍网格的点击由书架自身处理（选中 + 详情卡），不触发作者详情
@@ -1334,7 +1409,7 @@
 
   /* ========== 卡片入场动画 ========== */
   function observeCards() {
-    const cards = document.querySelectorAll('.school-card, .psych-card, .exp-card, .resource-card, .dir-column');
+    const cards = document.querySelectorAll('.school-card, .psych-card, .exp-card, .resource-card, .dir-column, .concept-card');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
