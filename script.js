@@ -477,6 +477,7 @@
       + '<p class="detail-name-en">' + c.nameEn + '</p>'
       + '</div>'
       + '<div class="detail-section"><h3 class="detail-section-title">概念释义</h3><p class="detail-text">' + c.definition + '</p></div>'
+      + '<div class="detail-section"><h3 class="detail-section-title">深入理解</h3><p class="detail-text">' + (c.detail || '') + '</p></div>'
       + '<div class="detail-section"><h3 class="detail-section-title">相关心理学家</h3>'
       + '<div class="school-member-list">'
       + related.map(function (p) {
