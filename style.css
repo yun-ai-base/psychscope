@@ -1,5 +1,5 @@
 :root {
-  --bg: #E8F5F9;
+  --bg: #EDF3F5;
   --bg-card: #FFFFFF;
   --text-dark: #1F1F1F;
   --text-mid: #555555;
@@ -8,14 +8,14 @@
   --accent-pink: #FFB2C1;
   --accent-green: #C7E5D4;
   --divider: #D4E5EB;
-  --shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow: 0 1px 2px rgba(31, 31, 31, 0.04), 0 4px 12px rgba(31, 31, 31, 0.06);
+  --shadow-hover: 0 2px 4px rgba(31, 31, 31, 0.05), 0 12px 28px rgba(31, 31, 31, 0.12);
   --font-serif: "Noto Serif SC", "Noto Serif", "Georgia", serif;
   --font-serif-en: "Noto Serif", "Georgia", serif;
-  --transition: 0.3s ease;
-  --bg-header: rgba(232, 245, 249, 0.85);
-  --bg-header-scrolled: rgba(232, 245, 249, 0.95);
-  --card-radius: 8px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --bg-header: rgba(237, 243, 245, 0.85);
+  --bg-header-scrolled: rgba(237, 243, 245, 0.96);
+  --card-radius: 14px;
   --soft-bg: rgba(122, 174, 192, 0.06);
   --soft-bg-strong: rgba(122, 174, 192, 0.12);
   --hover-bg: #f0f0f0;
@@ -35,8 +35,8 @@ html[data-theme="dark"] {
   --accent-pink: #FFC2CF;
   --accent-green: #D2ECDF;
   --divider: #24404A;
-  --shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-  --shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.4);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.35);
+  --shadow-hover: 0 2px 4px rgba(0, 0, 0, 0.4), 0 12px 28px rgba(0, 0, 0, 0.5);
   --bg-header: rgba(14, 26, 32, 0.85);
   --bg-header-scrolled: rgba(14, 26, 32, 0.96);
   --soft-bg: rgba(143, 195, 214, 0.08);
@@ -140,7 +140,7 @@ html[data-theme="dark"] .site-header {
   gap: 8px;
   padding: 8px 16px;
   background: rgba(255, 255, 255, 0.55);
-  border-radius: 4px;
+  border-radius: 10px;
   font-size: 14px;
   color: var(--text-light);
   cursor: pointer;
@@ -206,6 +206,7 @@ html[data-theme="dark"] .site-header {
   font-family: var(--font-serif);
   font-size: 56px;
   font-weight: 700;
+  letter-spacing: 0.02em;
   line-height: 1.2;
   color: var(--text-dark);
   max-width: 800px;
@@ -231,7 +232,7 @@ html[data-theme="dark"] .site-header {
   padding: 0 20px;
   height: 52px;
   background: var(--bg-card);
-  border-radius: 2px;
+  border-radius: var(--card-radius);
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
   transition: var(--transition);
 }
@@ -289,6 +290,7 @@ html[data-theme="dark"] .site-header {
   font-family: var(--font-serif);
   font-size: 36px;
   font-weight: 700;
+  letter-spacing: 0.03em;
   text-align: center;
   color: var(--text-dark);
   margin-bottom: 8px;
@@ -317,7 +319,7 @@ html[data-theme="dark"] .site-header {
   height: 180px;
   padding: 24px;
   background: var(--bg-card);
-  border-radius: 2px;
+  border-radius: var(--card-radius);
   box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
@@ -369,7 +371,7 @@ html[data-theme="dark"] .site-header {
 .psych-card {
   width: 312px;
   background: var(--bg-card);
-  border-radius: 2px;
+  border-radius: var(--card-radius);
   box-shadow: var(--shadow);
   overflow: hidden;
   transition: var(--transition);
@@ -432,7 +434,7 @@ html[data-theme="dark"] .site-header {
   width: 312px;
   padding: 24px;
   background: var(--bg-card);
-  border-radius: 2px;
+  border-radius: var(--card-radius);
   box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
@@ -547,7 +549,7 @@ html[data-theme="dark"] .site-header {
   margin: 0 auto;
   padding: 40px;
   background: var(--bg-card);
-  border-radius: 2px;
+  border-radius: var(--card-radius);
   box-shadow: var(--shadow);
   display: flex;
   align-items: center;
@@ -637,7 +639,7 @@ html[data-theme="dark"] .site-header {
   padding: 0 16px;
   display: flex;
   align-items: center;
-  border-radius: 2px;
+  border-radius: var(--card-radius);
   color: #fff;
   font-family: var(--font-serif);
   font-size: 15px;
@@ -652,7 +654,7 @@ html[data-theme="dark"] .site-header {
 .dir-list {
   padding: 12px 16px;
   background: var(--bg-card);
-  border-radius: 2px;
+  border-radius: var(--card-radius);
   box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
@@ -667,7 +669,7 @@ html[data-theme="dark"] .site-header {
   font-size: 14px;
   color: var(--text-dark);
   padding: 7px 10px 7px 14px;
-  border-radius: 4px;
+  border-radius: 10px;
   position: relative;
   transition: background 0.25s ease, color 0.25s ease;
   cursor: pointer;
@@ -682,7 +684,7 @@ html[data-theme="dark"] .site-header {
   transform: translateY(-50%) scaleY(0);
   width: 3px;
   height: 14px;
-  border-radius: 2px;
+  border-radius: var(--card-radius);
   background: var(--accent-blue);
   transition: transform 0.25s ease;
 }
@@ -724,7 +726,7 @@ html[data-theme="dark"] .site-header {
   width: 312px;
   padding: 24px;
   background: var(--bg-card);
-  border-radius: 2px;
+  border-radius: var(--card-radius);
   box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
@@ -758,7 +760,7 @@ html[data-theme="dark"] .site-header {
   color: #fff;
   font-size: 12px;
   font-family: var(--font-serif);
-  border-radius: 2px;
+  border-radius: var(--card-radius);
 }
 
 .resource-tag--blue  { background: var(--accent-blue); }
@@ -988,7 +990,7 @@ html[data-theme="dark"] .site-header {
   width: 100%;
   max-width: 800px;
   background: var(--bg-card);
-  border-radius: 4px;
+  border-radius: 10px;
   margin: 40px 20px 60px;
   padding: 48px 48px 48px;
   position: relative;
@@ -1052,7 +1054,7 @@ html[data-theme="dark"] .site-header {
   color: var(--text-light);
   padding: 2px 10px;
   border: 1px solid var(--divider);
-  border-radius: 2px;
+  border-radius: var(--card-radius);
 }
 
 .detail-school-tag {
@@ -1119,7 +1121,7 @@ html[data-theme="dark"] .site-header {
   margin-bottom: 24px;
   padding: 20px;
   background: var(--bg);
-  border-radius: 2px;
+  border-radius: var(--card-radius);
 }
 
 .detail-work-title {
@@ -1150,7 +1152,7 @@ html[data-theme="dark"] .site-header {
 .detail-ai-card {
   padding: 24px;
   background: var(--bg);
-  border-radius: 2px;
+  border-radius: var(--card-radius);
 }
 
 .detail-ai-score {
@@ -1214,7 +1216,7 @@ html[data-theme="dark"] .site-header {
   gap: 16px;
   padding: 16px;
   background: var(--bg);
-  border-radius: 2px;
+  border-radius: var(--card-radius);
   cursor: pointer;
   transition: var(--transition);
   border: 1px solid transparent;
@@ -1271,7 +1273,7 @@ html[data-theme="dark"] .site-header {
   color: var(--accent-blue);
   padding: 1px 6px;
   border: 1px solid var(--divider);
-  border-radius: 2px;
+  border-radius: var(--card-radius);
   margin-top: 4px;
 }
 
@@ -1286,7 +1288,7 @@ html[data-theme="dark"] .site-header {
   padding: 4px 14px;
   background: var(--bg);
   border: 1px solid var(--divider);
-  border-radius: 2px;
+  border-radius: var(--card-radius);
   font-family: var(--font-serif);
   font-size: 13px;
   color: var(--text-mid);
@@ -1309,7 +1311,7 @@ html[data-theme="dark"] .site-header {
   gap: 20px;
   padding: 16px 20px;
   background: var(--bg);
-  border-radius: 2px;
+  border-radius: var(--card-radius);
   cursor: pointer;
   transition: var(--transition);
   border: 1px solid transparent;
@@ -1360,7 +1362,7 @@ html[data-theme="dark"] .site-header {
 .school-book-card {
   padding: 16px 20px;
   background: var(--bg);
-  border-radius: 2px;
+  border-radius: var(--card-radius);
   border: 1px solid var(--divider);
   transition: var(--transition);
 }
@@ -1395,7 +1397,7 @@ html[data-theme="dark"] .site-header {
   padding: 16px 20px;
   background: rgba(122, 174, 192, 0.06);
   border: 1px solid var(--divider);
-  border-radius: 2px;
+  border-radius: var(--card-radius);
   text-decoration: none;
   color: inherit;
   transition: all 0.2s ease;
@@ -1419,7 +1421,7 @@ html[data-theme="dark"] .site-header {
   margin-bottom: 6px;
   padding: 2px 8px;
   background: rgba(122, 174, 192, 0.15);
-  border-radius: 2px;
+  border-radius: var(--card-radius);
 }
 
 .detail-related-title {
@@ -1464,7 +1466,7 @@ html[data-theme="dark"] .site-header {
   width: 100%;
   max-width: 600px;
   background: var(--bg-card);
-  border-radius: 4px;
+  border-radius: 10px;
   margin: 80px 20px 40px;
   padding: 16px 20px 24px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
@@ -1515,7 +1517,7 @@ html[data-theme="dark"] .site-header {
   align-items: center;
   gap: 12px;
   padding: 12px 16px;
-  border-radius: 2px;
+  border-radius: var(--card-radius);
   cursor: pointer;
   transition: var(--transition);
 }
@@ -1548,7 +1550,7 @@ html[data-theme="dark"] .site-header {
   color: var(--accent-blue);
   padding: 2px 8px;
   border: 1px solid var(--divider);
-  border-radius: 2px;
+  border-radius: var(--card-radius);
   white-space: nowrap;
 }
 
@@ -1576,7 +1578,7 @@ html[data-theme="dark"] .site-header {
   padding: 6px 14px;
   border: 1px solid var(--divider);
   background: var(--bg-card);
-  border-radius: 2px;
+  border-radius: var(--card-radius);
   font-family: var(--font-serif);
   font-size: 13px;
   color: var(--text-mid);
@@ -1776,7 +1778,7 @@ html[data-theme="dark"] .site-header {
   padding: 6px 14px;
   border: 1px solid var(--divider);
   background: var(--bg);
-  border-radius: 4px;
+  border-radius: 10px;
   font-family: var(--font-serif);
   font-size: 13px;
   color: var(--accent-blue);
@@ -1944,7 +1946,7 @@ html:not([data-theme="dark"]) .theme-toggle-icon--sun { display: block; }
   padding: 5px 12px;
   border: 1px solid var(--divider);
   background: var(--bg-card);
-  border-radius: 4px;
+  border-radius: 10px;
   font-family: var(--font-serif);
   font-size: 12px;
   color: var(--text-mid);
@@ -2100,7 +2102,7 @@ html:not([data-theme="dark"]) .theme-toggle-icon--sun { display: block; }
   width: 72px;
   height: 4px;
   margin-top: 10px;
-  border-radius: 2px;
+  border-radius: var(--card-radius);
   background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
 }
 
@@ -2169,7 +2171,7 @@ html[data-theme="dark"] .search-modal { background: var(--overlay-bg); }
   padding: 4px 12px;
   border: 1px solid var(--divider);
   background: var(--bg);
-  border-radius: 4px;
+  border-radius: 10px;
   font-family: var(--font-serif);
   font-size: 12px;
   color: var(--accent-blue);
@@ -2500,3 +2502,12 @@ html[data-theme="dark"] .search-modal { background: var(--overlay-bg); }
   border-top: 1px dashed var(--divider);
   padding-top: 8px;
 }
+
+
+/* ========== UI 微交互 ========== */
+.portrait { transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease; }
+.psych-card:hover .portrait { transform: scale(1.06); }
+.school-card:hover .school-icon { transform: scale(1.12); }
+.school-icon { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+.exp-card:hover .exp-year { transform: translateY(-2px); }
+.exp-year { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
