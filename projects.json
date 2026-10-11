@@ -166,5 +166,12 @@
     "desc": "StarGazer · 深空影像探索 — 304 张 NASA 真实影像画廊",
     "icon": "🌌",
     "cat": "content"
+  },
+  {
+    "name": "life-guide",
+    "zh": "高性价比人生指南",
+    "desc": "高性价比人生指南 · 677 条循证生活决策，标注成本/收益/证据等级",
+    "icon": "📘",
+    "cat": "content"
   }
 ]
