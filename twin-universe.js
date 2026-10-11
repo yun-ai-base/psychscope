@@ -44,6 +44,7 @@
     'existence-probability': '存在概率论',
     'cognitive-biases-atlas': '认知偏见图谱',
     'chinese-hall-of-fame': '太阳系中华名人堂',
+    'life-guide': '高性价比人生指南',
   };
 
   // Get current project name from data-project attribute
